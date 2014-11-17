@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+.section {
+    height:600px;
+    min-width:100%;
+
+}
+.section_1{background:red;}
+.section_2{background:blue;}
+.section_3{background:green;}
+.section_4{background:yellow;}
+</style>
+</head>
+<body>
+<div id="page">
+    <div class="section section_1"> ...content...</div>
+    <div class="section section_2">...content...</div>
+    <div class="section section_3">...content...</div>
+    <div class="section section_4">...content...</div>
+</div>
+<script>
+
+var shown = document.getElementById("page").children;
+
+function callback () {
+    debugger;
+    alert('end of div');
+} 
+
+function isElementInViewport(el) {
+    var eap,
+        rect     = el.getBoundingClientRect(),
+        docEl    = document.documentElement,
+        vWidth   = window.innerWidth || docEl.clientWidth,
+        vHeight  = window.innerHeight || docEl.clientHeight,
+        efp      = function (x, y) { return document.elementFromPoint(x, y) },
+        contains = "contains" in el ? "contains" : "compareDocumentPosition",
+        has      = contains == "contains" ? 1 : 0x14;
+
+    // Return false if it's not in the viewport
+    if (rect.right < 0 || rect.bottom < 0 
+            || rect.left > vWidth || rect.top > vHeight)
+        return false;
+
+    // Return true if any of its four corners are visible
+    return (
+          (eap = efp(rect.left,  rect.top)) == el || el[contains](eap) == has
+      ||  (eap = efp(rect.right, rect.top)) == el || el[contains](eap) == has
+      ||  (eap = efp(rect.right, rect.bottom)) == el || el[contains](eap) == has
+      ||  (eap = efp(rect.left,  rect.bottom)) == el || el[contains](eap) == has
+    );
+}
+
+function fireIfElementVisible (el, callback) {
+    debugger;
+    return function () {
+        if ( isElementInViewport(el) ) {
+            callback();
+        }
+    }
+}
+
+var handler = fireIfElementVisible (shown[shown.length - 1], callback);
+
+$(document).on('DOMContentLoaded load resize scroll', handler); 
+</script>
+</body>
+</html>
