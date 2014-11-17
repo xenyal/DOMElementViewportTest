@@ -26,7 +26,6 @@
 var shown = document.getElementById("page").children;
 
 function callback () {
-    debugger;
     alert('end of div');
 } 
 
@@ -55,7 +54,6 @@ function isElementInViewport(el) {
 }
 
 function fireIfElementVisible (el, callback) {
-    debugger;
     return function () {
         if ( isElementInViewport(el) ) {
             callback();
